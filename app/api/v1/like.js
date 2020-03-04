@@ -5,7 +5,7 @@ const { success } = require('@lib/helper')
 const { LikeValidator } = require('@validator')
 
 const router = new Router({
-  prefix: '/v1/like'
+  prefix: '/api/v1/like'
 })
 
 router.post('/', new Auth().m, async ctx => {

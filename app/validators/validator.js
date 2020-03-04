@@ -1,6 +1,6 @@
 const { Rule, LinValidator } = require('@core/lin-validator-v2')
-const { User } = require('@model/user')
 const { LoginType, ArtType } = require('@lib/enum')
+const { User } = require('@model/user')
 
 class PositiveIntegerValidator extends LinValidator {
   constructor() {
@@ -13,7 +13,7 @@ class PositiveIntegerValidator extends LinValidator {
   }
 }
 
-class RegisterValidator extends LinValidator {
+class BaseUserValidator extends LinValidator {
   constructor() {
     super()
     this.email = [
@@ -42,6 +42,12 @@ class RegisterValidator extends LinValidator {
       throw new Error('两个密码不一致')
     }
   }
+}
+
+class RegisterValidator extends LinValidator {
+  constructor() {
+    super()
+  }
 
   async validateEmail(vals) {
     const email = vals.body.email
@@ -54,6 +60,12 @@ class RegisterValidator extends LinValidator {
     if (user) {
       throw new Error('邮箱已存在')
     }
+  }
+}
+
+class UpdateUserValidator extends LinValidator {
+  constructor() {
+    super()
   }
 }
 
@@ -160,6 +172,7 @@ class AddShortCommentValidator extends PositiveIntegerValidator {
 module.exports = {
   PositiveIntegerValidator,
   RegisterValidator,
+  UpdateUserValidator,
   TokenValidator,
   NotEmptyValidate,
   LikeValidator,

@@ -40,15 +40,21 @@ const findMembers = function (instance, {
     return _find(instance)
 }
 
+// sign(payload, secretOrPrivateKey, options)
+// payload 要放入 jwttoken 中的信息
+// scope 用户权限
 const generateToken = function(uid, scope){
     const secretKey = global.config.security.secretKey
     const expiresIn = global.config.security.expiresIn
     const token = jwt.sign({
         uid,
         scope
-    },secretKey,{
+    },
+    secretKey,
+    {
         expiresIn
     })
+
     return token
 }
 

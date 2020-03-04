@@ -1,16 +1,6 @@
-const {
-  sequelize
-} = require('@core/db')
-
-const {
-  Sequelize,
-  Model,
-  Op
-} = require('sequelize')
-
-const {
-  Favor
-} = require('@model/favor')
+const { Sequelize, Model, Op } = require('sequelize')
+const { sequelize } = require('@core/db')
+const { Favor } = require('@model/favor')
 
 class HotBook extends Model {
   static async getAll() {

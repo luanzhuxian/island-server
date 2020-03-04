@@ -1,11 +1,5 @@
-const {
-  Sequelize,
-  Model
-} = require('sequelize')
-
-const {
-  sequelize
-} = require('@core/db')
+const { Sequelize, Model } = require('sequelize')
+const { sequelize } = require('@core/db')
 
 class Flow extends Model {
 

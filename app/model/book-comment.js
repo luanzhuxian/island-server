@@ -1,10 +1,5 @@
-const {
-  sequelize
-} = require('../../core/db')
-const {
-  Sequelize,
-  Model
-} = require('sequelize')
+const { Sequelize, Model } = require('sequelize')
+const { sequelize } = require('@core/db')
 
 class Comment extends Model {
   static async addComment(bookId, content) {

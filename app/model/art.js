@@ -1,28 +1,16 @@
-const {
-  flatten
-} = require('lodash')
-
-const {
-  Op
-} = require('sequelize')
-
-const {
-  Movie,
-  Sentence,
-  Music
-} = require('@model/classic')
+const { flatten } = require('lodash')
+const { Op } = require('sequelize')
+const { Movie, Sentence, Music } = require('@model/classic')
+const { Book } = require('@model/book')
+const { Favor } = require('@model/favor')
 
 class Art {
-
   constructor(artId, type) {
     this.artId = artId
     this.type = type
   }
 
   async getDetail(uid) {
-    const {
-      Favor
-    } = require('@model/favor')
 
     const art = await Art.getData(this.artId, this.type)
     if (!art) {
@@ -58,6 +46,7 @@ class Art {
 
   static async _getListByType(ids, type) {
     let arts = []
+    const scope = 'filter' // 全局定义的 scope
     const finder = {
       where: {
         id: {
@@ -65,7 +54,7 @@ class Art {
         }
       }
     }
-    const scope = 'bh'
+
     switch (type) {
       case 100:
         arts = await Movie.scope(scope).findAll(finder)
@@ -86,12 +75,13 @@ class Art {
 
   static async getData(artId, type, useScope = true) {
     let art = null
+    const scope = useScope ? 'filter' : null
     const finder = {
       where: {
         id: artId
       }
     }
-    const scope = useScope ? 'bh' : null
+
     switch (type) {
       case 100:
         art = await Movie.scope(scope).findOne(finder)
@@ -103,9 +93,6 @@ class Art {
         art = await Sentence.scope(scope).findOne(finder)
         break
       case 400:
-        const {
-          Book
-        } = require('@model/book')
         art = await Book.scope(scope).findOne(finder)
         if (!art) {
           art = await Book.create({

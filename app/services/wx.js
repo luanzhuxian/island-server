@@ -1,8 +1,8 @@
 const util = require('util')
 const axios = require('axios')
 const { User } = require('@model/user')
-const { generateToken } = require('@core/util')
 const { Auth } = require('@middlewares/auth')
+const { generateToken } = require('@core/util')
 
 class WXManager {
   static async codeToToken(code) {
@@ -14,6 +14,7 @@ class WXManager {
     }
     const errcode = result.data.errcode
     const errmsg = result.data.errmsg
+    // errcode === 4029 说明入参的 code 是无效的
     if (errcode) {
       throw new global.errs.AuthFailed('openid获取失败:' + errmsg)
     }

@@ -1,8 +1,8 @@
 const Router = require('koa-router')
-const { HotBook } = require('@model/hot-book')
 const { Book } = require('@model/book')
-const { Favor } = require('@model/favor')
+const { HotBook } = require('@model/hot-book')
 const { Comment } = require('@model/book-comment')
+const { Favor } = require('@model/favor')
 const { Auth } = require('@middlewares/auth')
 const { success } = require('@lib/helper')
 const {
@@ -12,7 +12,7 @@ const {
 } = require('@validator')
 
 const router = new Router({
-  prefix: '/v1/book'
+  prefix: '/api/v1/book'
 })
 
 router.get('/hot_list', async ctx => {

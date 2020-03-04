@@ -12,7 +12,7 @@ class InitManager {
 
   static initLoadRouters() {
     // 获取绝对路径
-    const dir = `${process.cwd()}/app/api/v2`
+    const dir = `${process.cwd()}/app/api/v1`
     requireDirectory(module, dir, {
       visit (obj) {
         if (obj instanceof Router) {

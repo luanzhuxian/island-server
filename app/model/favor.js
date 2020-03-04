@@ -1,14 +1,6 @@
-const {
-  sequelize
-} = require('@core/db')
-const {
-  Sequelize,
-  Model,
-  Op
-} = require('sequelize')
-const {
-  Art
-} = require('./art')
+const { Sequelize, Model, Op } = require('sequelize')
+const { sequelize } = require('@core/db')
+const { Art } = require('@model/art')
 
 class Favor extends Model {
   static async like(artId, type, uid) {

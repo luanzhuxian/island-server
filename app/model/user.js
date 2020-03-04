@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs')
-const { Sequelize, Model } = require('sequelize')
-// const { sequelize } = require('@core/db')
-const { sequelize } = require('../../core/db')
+const { Sequelize, Model, Op } = require('sequelize')
+const { sequelize } = require('@core/db')
 
 class User extends Model {
+  // email 登录查询用户信息
   static async verifyEmailPassword(email, plainPassword) {
     const user = await User.findOne({
       where: {
@@ -20,6 +20,7 @@ class User extends Model {
     return user
   }
 
+  // 小程序 登录查询用户信息
   static async getUserByOpenid(openid) {
     const user = await User.findOne({
       where: {
@@ -34,6 +35,36 @@ class User extends Model {
     return await User.create({
       openid
     })
+  }
+
+  static async updateUser ({ email, password, nickname, uid }) {
+    async function _check (email, uid) {
+      const user = await User.findOne({
+        where: {
+          email,
+          id: {
+            [Op.not]: uid
+          }
+        }
+      })
+      if (user) {
+        throw new global.errs.AuthFailed('邮箱已存在')
+      }
+      return user
+    }
+
+    const user = await _check(email, uid)
+
+    User.update({
+      email,
+      password,
+      nickname
+    }, {
+      where: {
+        id: uid
+      }
+    })
+    return user
   }
 }
 
