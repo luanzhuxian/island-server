@@ -65,6 +65,7 @@ class Favor extends Model {
     return favor ? true : false
   }
 
+  // 查询所有点赞的期刊 movie、music、sentene 信息，再根据期刊 id 查具体信息列表
   static async getMyClassicFavors(uid) {
     const arts = await Favor.findAll({
       where: {
@@ -98,6 +99,16 @@ class Favor extends Model {
       favNums: favorNums,
       likeStatus: myFavor ? 1 : 0
     }
+  }
+
+  static async getMyFavorBookCount(uid) {
+    const count = await Favor.count({
+      where: {
+        type: 400,
+        uid
+      }
+    })
+    return count
   }
 }
 

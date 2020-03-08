@@ -24,9 +24,10 @@ class LinValidator {
         }
     }
 
-    // parsed 标示是否取原始类型数据
+    // parsed 表示是否取原始类型数据
     get(path, parsed = true) {
         if (parsed) {
+            // 先去 parsed 下找，没有的话再去 parsed.default 下找
             const value = get(this.parsed, path, null)
             if (value == null) {
                 const keys = path.split('.')

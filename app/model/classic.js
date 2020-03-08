@@ -10,7 +10,7 @@ const classicFields = {
     defaultValue: 0
   },
   title: Sequelize.STRING,
-  type: Sequelize.TINYINT,
+  type: Sequelize.INTEGER
 }
 
 class Movie extends Model {

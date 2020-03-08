@@ -87,10 +87,11 @@ class TokenValidator extends LinValidator {
     ]
   }
 
-  validateLoginType(vals) {
+  checkLoginType(vals) {
     if (!vals.body.type) {
       throw new Error('type是必传参数')
     }
+    
     if (!LoginType.isThisType(vals.body.type)) {
       throw new Error('type参数不合法')
     }
@@ -108,12 +109,29 @@ class NotEmptyValidate extends LinValidator {
   }
 }
 
+
+class Checker {
+  constructor (type) {
+    this.type = type
+  }
+
+  check (vals) {
+    let type = vals.body.type || vals.path.type
+    if (!type) {
+      throw new Error('type是必须参数')
+    }
+
+    if (!this.type.isThisType(type)) {
+      throw new Error('type参数不合法')
+    }
+  }
+} 
+
 function checkArtType(vals) {
   let type = vals.body.type || vals.path.type
   if (!type) {
     throw new Error('type是必须参数')
   }
-  type = parseInt(type)
 
   if (!ArtType.isThisType(type)) {
     throw new Error('type参数不合法')
@@ -123,7 +141,10 @@ function checkArtType(vals) {
 class LikeValidator extends PositiveIntegerValidator {
   constructor() {
     super()
-    this.validateType = checkArtType
+    // this.validateType = checkArtType
+    // 用类同时解决 checkArtType 和 checkLoginType
+    const checker = new Checker(ArtType)
+    this.validateType = checker.check.bind(checker)
   }
 }
 

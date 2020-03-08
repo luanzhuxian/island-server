@@ -35,12 +35,17 @@ sequelize.sync(
   // }
 )
 
+// 全局 JSON 序列化
 Model.prototype.toJSON = function () {
   let data = clone(this.dataValues)
 
   unset(data, 'updatedAt')
   unset(data, 'createdAt')
   unset(data, 'deletedAt')
+
+  // if (Array.isArray(this.exclude)) {
+  //   this.exclude.forEach(val => unset(data, val))
+  // }
 
   for (key in data) {
     if (key === 'image') {

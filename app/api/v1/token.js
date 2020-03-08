@@ -19,6 +19,7 @@ const router = new Router({
   prefix: '/api/v1/token'
 })
 
+// 获取 token
 router.post('/', async (ctx, next) => {
   const v = await new TokenValidator().validate(ctx)
   let token

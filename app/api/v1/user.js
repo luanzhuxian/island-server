@@ -19,7 +19,7 @@ router.post('/register', async (ctx, next) => {
     nickname: v.get('body.nickname')
   }
 
-  User.create(user)
+  await User.create(user)
 
   success()
 })

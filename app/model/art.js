@@ -2,27 +2,28 @@ const { flatten } = require('lodash')
 const { Op } = require('sequelize')
 const { Movie, Sentence, Music } = require('@model/classic')
 const { Book } = require('@model/book')
-const { Favor } = require('@model/favor')
 
 class Art {
-  constructor(artId, type) {
-    this.artId = artId
-    this.type = type
-  }
+  // constructor(artId, type) {
+  //   this.artId = artId
+  //   this.type = type
+  // }
 
-  async getDetail(uid) {
+  // async getDetail(uid) {
+  //   // 局部倒入 避免循环引用
+  //   const { Favor } = require('@model/favor')
+  //   const art = await Art.getData(this.artId, this.type)
+  //   if (!art) {
+  //     throw new global.errs.NotFound()
+  //   }
+  //   const like = await Favor.userLikeIt(this.artId, this.type, uid)
+  //   return {
+  //     art,
+  //     likeStatus: like
+  //   }
+  // }
 
-    const art = await Art.getData(this.artId, this.type)
-    if (!art) {
-      throw new global.errs.NotFound()
-    }
-    const like = await Favor.userLikeIt(this.artId, this.type, uid)
-    return {
-      art: art,
-      likeStatus: like
-    }
-  }
-
+  // 查询多类的列表（movie、music、sentene）
   static async getList(artInfoList) {
     const artInfoObj = {
       100: [],
@@ -44,6 +45,7 @@ class Art {
     return flatten(arts)
   }
 
+  // 查询某一类的列表
   static async _getListByType(ids, type) {
     let arts = []
     const scope = 'filter' // 全局定义的 scope
@@ -73,6 +75,7 @@ class Art {
     return arts
   }
 
+  // 查询单个物体
   static async getData(artId, type, useScope = true) {
     let art = null
     const scope = useScope ? 'filter' : null

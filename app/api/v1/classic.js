@@ -12,6 +12,7 @@ const router = new Router({
   prefix: '/api/v1/classic'
 })
 
+// 获取最新期刊
 router.get('/latest', new Auth().m, async (ctx, next) => {
   const flow = await Flow.findOne({
     order: [
@@ -66,24 +67,30 @@ router.get('/:index/previous', new Auth().m, async ctx => {
   ctx.body = art
 })
 
+// 获取某个期刊详情 + 是否点赞
 router.get('/:type/:id', new Auth().m, async ctx => {
   const v = await new ClassicValidator().validate(ctx)
   const id = v.get('path.id')
   const type = parseInt(v.get('path.type'))
   
-  const artDetail = await new Art(id, type).getDetail(ctx.auth.uid)
-
-  artDetail.art.setDataValue('likeStatus', artDetail.likeStatus)
+  const art = await Art.getData(id, type)
+     if (!art) {
+      throw new global.errs.NotFound()
+    }
+  const like = await Favor.userLikeIt(id, type, ctx.auth.uid)
+  art.setDataValue('likeStatus', like)
 
   ctx.body = {
-    art: artDetail.art
+    art
   }
 })
 
+// 获取某个期刊点赞数 + 是否点赞
 router.get('/:type/:id/favor', new Auth().m, async ctx => {
   const v = await new ClassicValidator().validate(ctx)
   const id = v.get('path.id')
   const type = parseInt(v.get('path.type'))
+  
   const art = await Art.getData(id, type)
   if (!art) {
     throw new global.errs.NotFound()
@@ -95,6 +102,7 @@ router.get('/:type/:id/favor', new Auth().m, async ctx => {
   }
 })
 
+// 获取我点赞的所有期刊列表
 router.get('/favor', new Auth().m, async ctx => {
   const uid = ctx.auth.uid
   ctx.body = await Favor.getMyClassicFavors(uid)

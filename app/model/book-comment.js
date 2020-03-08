@@ -31,6 +31,7 @@ class Comment extends Model {
     return comments
   }
 
+  // JSON 序列化
   toJSON() {
     return {
       content: this.getDataValue('content'),
