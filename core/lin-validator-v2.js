@@ -41,6 +41,7 @@ class LinValidator {
     }
 
     _findMembersFilter(key) {
+        // 匹配以 validate 开头的驼峰式方法名
         if (/validate([A-Z])\w+/g.test(key)) {
             return true
         }
